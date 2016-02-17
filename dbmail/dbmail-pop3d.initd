@@ -12,7 +12,7 @@ PID_DIR=/var/run/dbmail
 PID=pid
 
 # Where is the dbmail.conf file located?
-CONFIG=/etc/dbmail/dbmail.conf
+CONFIG=/etc/dbmail.conf
 
 extra_started_commands="reload"
 
