@@ -2,14 +2,14 @@
 # Maintainer:
 pkgname=dbmail
 pkgver=3.2.3
-pkgrel=0
+pkgrel=1
 pkgdesc="Fast and scalable sql based email services"
 url="http://www.dbmail.org"
 arch="all"
 license="GPL2"
 depends=""
 depends_dev=""
-makedepends="$depends_dev asciidoc xmlto automake autoconf openldap-dev libsieve-dev glib-dev gmime-dev mhash-dev libevent-dev libzdb-dev bsd-compat-headers"
+makedepends="$depends_dev asciidoc xmlto automake autoconf openldap-dev libsieve-dev glib-dev gmime-dev mhash-dev libevent-dev libzdb-dev libtool bsd-compat-headers"
 install="$pkgname.pre-install"
 subpackages="$pkgname-doc $pkgname-auth-ldap:auth_ldap $pkgname-contrib"
 source="http://www.dbmail.org/download/3.2/dbmail-$pkgver.tar.gz
@@ -35,6 +35,7 @@ prepare() {
 
 build() {
 	cd "$_builddir"
+	autoreconf -i
 	./configure \
 		--prefix=/usr \
 		--sysconfdir=/etc \
@@ -107,17 +108,17 @@ contrib() {
 }
 
 md5sums="4f140751642559395dfe3a6bb2cc9300  dbmail-3.2.3.tar.gz
-f4e5dc381a84c98ac3ec99fb97e9edbb  dbmail-imapd.initd
-2890edd8bb0841c58473001b01f44ced  dbmail-lmtpd.initd
-499aac58fd71b55de4c01fba3a6dfdd5  dbmail-pop3d.initd
-1415fab716c37179ea7f9535acf56bb6  dbmail-timsieved.initd"
+a08d1749afbc80fa9bb22c1d4edb577e  dbmail-imapd.initd
+144f375a76690d4957304120622c8830  dbmail-lmtpd.initd
+8f6ae80169545d9508f938ee0be41819  dbmail-pop3d.initd
+a58caa36e1d1d6340ace2fe1f3405f85  dbmail-timsieved.initd"
 sha256sums="fd4d90e3e5ddb0c3fbdaa766d19d2464b5027a8c8d0b0df614418a3aac811832  dbmail-3.2.3.tar.gz
-0fafa39ae7c7aef485970e40c7780675495ed17729fd20a1afed67f16418e4fe  dbmail-imapd.initd
-ecbc30265454847e727afe823a5b35113e1161f61491f73a5773a3f9c2b89bb6  dbmail-lmtpd.initd
-72c10c12b5436804b7d7629d6bb7a85cc812adc38509887644d3f9e91f0a78be  dbmail-pop3d.initd
-2c84911f2dec3f971ca6d2cecaa1ffd600aefe9f0057afb06137ce54bb49a20c  dbmail-timsieved.initd"
+bb8eb591a671b1283ba9145dd6a27c29ad3f118266a48c66be3ecb02fe04b080  dbmail-imapd.initd
+5978f1fab07c0cade89dce8f191a9e005177e0e31f45ca23790c4679e45ee564  dbmail-lmtpd.initd
+0f30afdcd2d8ffed534e2747e62298adfbc3f65831af2ec1265b8fdafbc56998  dbmail-pop3d.initd
+b8ee15fecd9d218e2299d30a62a6def63c69365e8cc3f4df0af2db59e6851a0b  dbmail-timsieved.initd"
 sha512sums="29cc89830278f2ff28a4221fc81d4ff13cc371fbca7fb51d5376e9243234220b552cb4b6ec035c150e6cfa178435c4f36b9ce132fc02334bc6cdeb1a41c8ed85  dbmail-3.2.3.tar.gz
-6ebaa811a22173cdc7b407d90ebc20cedbfe77fd1e3541a03fca9101833f5b82be68eb0c795bed87f87a73c90701df6548ec3a7c08d0e68a4136387df6116587  dbmail-imapd.initd
-aa5a567fe4bb7949e795cc6004338d995919b46229e79462ba5106c7d1ab5898ae0885047a4c5f1ce742653e32545c623a377274bdc49ee53107dc7872d6d449  dbmail-lmtpd.initd
-ab66aa08150d6c200f6653fc969403afc0ce4a4322b1cc225b83f7ad87b958be120684f4bb60125b0dd685f07dd2600875c0bb463d58b4cbb6b897007cbd95f6  dbmail-pop3d.initd
-4fef0321ab51538c738c11e22a286a6081e3a834eccb3518ba669d7d85c569c4bc2865a6082c247693a80fad1d5495e3be8d0a38cf519307494fcf1c8ed797cc  dbmail-timsieved.initd"
+65860707cacfeaeb95b60140622f50fc0a9ff6234dbe3d18e2eea5f9f521e6b696ed852238d22d05a69f60f954d6fb48190eea87f2cc6f3aeaf8818877d88de5  dbmail-imapd.initd
+5f53186385461db04e0a729c4487ec5caaecb251bba37121f97a809b3a21a817eab5e51dd8b46dfb743125d925be79f415bdaa4b4b9f977b91efd8c6bd0a4a24  dbmail-lmtpd.initd
+a8f5dc903b5295454242643fbbb9f37b8eda005f91daa76b96a0b66a4c1516aac79fdd6f446f7813a32a80fb4b7865a5a9c3f394e84a0373492a90923f159f38  dbmail-pop3d.initd
+dcdcd8f6026f1903eaca353f03782178a0f4598bdbe4457438626507200f47175f3bb36945bce00b622db1da297931b943ad6bc65ebab89226e0c5d8c4f7709b  dbmail-timsieved.initd"
