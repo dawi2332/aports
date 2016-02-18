@@ -1,5 +1,5 @@
 # Contributor:
-# Maintainer:
+# Maintainer: David Winter <dawi2332@gmail.com>
 pkgname=dbmail
 pkgver=3.2.3
 pkgrel=1
@@ -10,13 +10,14 @@ license="GPL2"
 depends=""
 depends_dev=""
 makedepends="$depends_dev asciidoc xmlto automake autoconf libtool openldap-dev libsieve-dev glib-dev gmime-dev mhash-dev libevent-dev libzdb-dev bsd-compat-headers"
-install="$pkgname.pre-install $pkgname.post-install"
+install="$pkgname.pre-install"
 subpackages="$pkgname-doc $pkgname-auth-ldap:auth_ldap $pkgname-contrib"
 source="http://www.dbmail.org/download/3.2/dbmail-$pkgver.tar.gz
 	dbmail-imapd.initd
 	dbmail-lmtpd.initd
 	dbmail-pop3d.initd
 	dbmail-timsieved.initd
+	10-reopen-logs.patch
 	"
 
 _builddir="$srcdir"/$pkgname-$pkgver
@@ -35,8 +36,8 @@ prepare() {
 
 build() {
 	cd "$_builddir"
-	autoreconf -i
 	./configure \
+		--libdir=/usr/lib \
 		--prefix=/usr \
 		--sysconfdir=/etc \
 		--mandir=/usr/share/man \
@@ -67,6 +68,8 @@ package() {
 		"$pkgdir"/etc/init.d/$pkgname-timsieved || return 1
 	install -m644 -D "$srcdir"/$pkgname-$pkgver/$pkgname.conf \
 		"$pkgdir"/etc/$pkgname.conf || return 1
+	chown dbmail:dbmail "$pkgdir"/var/lib/dbmail || return 1
+	chown dbmail:dbmail "$pkgdir"/var/run/dbmail || return 1
 }
 
 auth_ldap() {
@@ -111,14 +114,17 @@ md5sums="4f140751642559395dfe3a6bb2cc9300  dbmail-3.2.3.tar.gz
 eb0d5b8327118d0918f663fd1a3849d0  dbmail-imapd.initd
 6a4d1b61ea72294a03902a001e190d5c  dbmail-lmtpd.initd
 df1bcaefc5dd309785987fa9553ebbb2  dbmail-pop3d.initd
-5d5fdfcdd17de7f0745951d236e6e18b  dbmail-timsieved.initd"
+5d5fdfcdd17de7f0745951d236e6e18b  dbmail-timsieved.initd
+a5487b380f0a90fd5970d32070ceee2b  10-reopen-logs.patch"
 sha256sums="fd4d90e3e5ddb0c3fbdaa766d19d2464b5027a8c8d0b0df614418a3aac811832  dbmail-3.2.3.tar.gz
 7dc940dfbecefdfbadb1c7504358640d919fc82166d1e40fd5ded2c7cf11a199  dbmail-imapd.initd
 374297e8211cef6fdf796b002268b01cb995e1421e6fdf68f79f22d27866e7d8  dbmail-lmtpd.initd
 35ba41363fee42501e5b9b4ca12c0b2790c3fe875da856f57969214e53caea44  dbmail-pop3d.initd
-4136c6ef42899a285df446ab38141c8b8f1fe7c91597ace056586dc638288ede  dbmail-timsieved.initd"
+4136c6ef42899a285df446ab38141c8b8f1fe7c91597ace056586dc638288ede  dbmail-timsieved.initd
+a1c47ff254841b7ad6f46b57dc0dec0aa646992e9ddc0fac2f39b3a12b5bf5b7  10-reopen-logs.patch"
 sha512sums="29cc89830278f2ff28a4221fc81d4ff13cc371fbca7fb51d5376e9243234220b552cb4b6ec035c150e6cfa178435c4f36b9ce132fc02334bc6cdeb1a41c8ed85  dbmail-3.2.3.tar.gz
 259d1cf94b9fb676d8dc5c4a2bf4b56e01cc44420b915c188fcdfe1272fbffcaa44af121742d2e8fbb2bf3f5732543b3985d587b462be1339a736dda19bb8cf8  dbmail-imapd.initd
 e4e404caec8da64903f6b3fc92c732508c125ed6a951f04b12516eb2c542a54fd36b6d209dc8363a6a78bd549846bd53551e761d285af0a89c1988112cf1c22b  dbmail-lmtpd.initd
 e87acac47037c7c23bb9cf081975a5c07bf3782b6dc607ebaf52ae8b485308ba50ef1f45192ce0243977aa0582921bcb26644b20720613e462a9ebc6f1a4dbbe  dbmail-pop3d.initd
-4610e1beb126bba0746f2d0950ebe769efee167abec0264c0e4cf050312f51b1017c0c88e8db0182faf518f445f66ed9395c33489ae5e4711e8dc1380e5f3bc3  dbmail-timsieved.initd"
+4610e1beb126bba0746f2d0950ebe769efee167abec0264c0e4cf050312f51b1017c0c88e8db0182faf518f445f66ed9395c33489ae5e4711e8dc1380e5f3bc3  dbmail-timsieved.initd
+a74497c83e9771a98756cf40abf21daee5683b3b5413848cce1c91312924132e7990d236d2070b652e554a4f59221932c5ccf4edb0da0e2233f552bc1218b1c7  10-reopen-logs.patch"

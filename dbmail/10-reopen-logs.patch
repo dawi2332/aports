@@ -1,0 +1,48 @@
+--- dbmail-3.2.3/src/server.c.orig
++++ dbmail-3.2.3/src/server.c
+@@ -335,21 +335,27 @@
+ 		TRACE(TRACE_INFO, "reopening log files");
+ 	}
+ 
+-	if (fstdout) fclose(fstdout);
+-	if (fstderr) fclose(fstderr);
++	int log_is_file = is_file(conf->log);
++	int error_log_is_file = is_file(conf->error_log);
++	if (log_is_file && fstdout) fclose(fstdout);
++	if (error_log_is_file && fstderr) fclose(fstderr);
+ 	if (fnull) fclose(fnull);
+ 
+ 	SetTraceLevel(conf->service_name);
+ 	config_get_timeout(conf, conf->service_name);
+ 
+-	if (! (fstdout = freopen(conf->log, "a", stdout))) {
+-		serr = errno;
+-		TRACE(level, "freopen failed on [%s] [%s]", conf->log, strerror(serr));
++	if (log_is_file) {
++		if (! (fstdout = freopen(conf->log, "a", stdout))) {
++			serr = errno;
++			TRACE(level, "freopen failed on [%s] [%s]", conf->log, strerror(serr));
++		}
+ 	}
+ 
+-	if (! (fstderr = freopen(conf->error_log, "a", stderr))) {
+-		serr = errno;
+-		TRACE(level, "freopen failed on [%s] [%s]", conf->error_log, strerror(serr));
++	if (error_log_is_file) {
++		if (! (fstderr = freopen(conf->error_log, "a", stderr))) {
++			serr = errno;
++			TRACE(level, "freopen failed on [%s] [%s]", conf->error_log, strerror(serr));
++		}
+ 	}
+ 
+ 	if (! (fnull = freopen("/dev/null", "r", stdin))) {
+@@ -1160,4 +1166,8 @@
+ }
+ 
+ 
+-
++int is_file(const char *name) {
++	struct stat buf;
++	fstat(name, &buf);
++	return (buf.st_mode & S_IFREG) != 0;
++}

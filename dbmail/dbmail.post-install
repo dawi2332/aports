@@ -1,5 +1,0 @@
-#!/bin/sh
-
-chown -u dbmail -g dbmail /var/lib/dbmail
-chown -u dbmail -g dbmail /var/run/dbmail
-exit 0
